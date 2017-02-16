@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 import { Link } from 'react-router';
 
-export default class AddPhoneView extends Component {
+export default class extends Component {
 
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,

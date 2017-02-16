@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import { Link } from 'react-router';
 
-export default class PhoneList extends Component {
+export default class extends Component {
 
   static contextTypes = {
     router: PropTypes.object.isRequired
@@ -9,43 +9,45 @@ export default class PhoneList extends Component {
 
   static propTypes = {
     onRemove: PropTypes.func.isRequired,
-    contacts: PropTypes.array.isRequired
+    phones: PropTypes.array.isRequired,
+    contact: PropTypes.string.isRequired
   };
 
   _onRemove = (id) => (event) => {
     this.props.onRemove(id);
-    this.context.router.push('/');
+    this.context.router.push(`/phones/${this.props.contact}`);
     event.preventDefault();
   };
 
   _goToUpdatePage = (id) => (event) => {
-    this.context.router.push(`/contacts/update/${id}`);
+    this.context.router.push(`/phones/${this.props.contact}/update/${id}`);
     event.preventDefault();
   };
 
-  _goToPhonesPage = (id) => (event) => {
-    this.context.router.push(`/phones/${id}`);
-    event.preventDefault();
-  };
+  _getAddUrl = () => `/phones/${this.props.contact}/add`;
 
   render() {
     return (
       <div>
         <div>
-          List of contacts
+          List of phones
         </div>
         <div>
-          <Link to="/contacts/add">
-            Add contact
+          <Link to="/">
+            List of contacts
+          </Link>
+        </div>
+        <div>
+          <Link to={this._getAddUrl()}>
+            Add phone
           </Link>
         </div>
         <div>
           <table>
             <tbody>
-            {this.props.contacts.map(item => (
+            {this.props.phones.filter(_ => _.contact === this.props.contact).map(item => (
                 <tr key={item.id}>
-                  <td>{item.contact}</td>
-                  <td><a href="#" onClick={this._goToPhonesPage(item.id)}>phones</a></td>
+                  <td>{item.phone}</td>
                   <td><a href="#" onClick={this._goToUpdatePage(item.id)}>update</a></td>
                   <td><a href="#" onClick={this._onRemove(item.id)}>delete</a></td>
                 </tr>
